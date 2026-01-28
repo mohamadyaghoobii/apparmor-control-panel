@@ -165,6 +165,57 @@ sudo systemctl status apparmor
 
 ---
 
+## 🧭 Included tool: `apparmor-control-panel.sh` (interactive automation)
+
+This repository includes an interactive Bash tool named **`apparmor-control-panel.sh`** that automates the “boring but critical” operational steps around AppArmor on Debian/Ubuntu-style systems.
+
+### ✅ What it automates
+
+From a single menu-driven interface, it can:
+
+- Verify required packages are installed (and install missing ones)
+- Ensure the AppArmor service is enabled and running
+- Check whether AppArmor is enabled in the kernel (and, if needed, patch GRUB to enable it)
+- Deploy a small set of **service profiles / hardening overrides** for common web stacks (depending on what is installed on the host)
+- Reload profiles safely after changes
+- Switch profiles between **Enforce** and **Complain** modes using simple numeric choices
+- Show status (`aa-status`) and help you view AppArmor-related logs
+
+### 🧩 Where it writes things
+
+Typical paths used:
+
+- Profiles: `/etc/apparmor.d/`
+- Local overrides (when supported): `/etc/apparmor.d/local/`
+
+### ▶️ How to run it
+
+1) Make it executable:
+```bash
+chmod +x apparmor-control-panel.sh
+```
+
+2) Run as root:
+```bash
+sudo ./apparmor-control-panel.sh
+```
+
+### 🧪 Recommended workflow (safe operations)
+
+- Start with **Complain mode** to observe denials without blocking the service
+- Validate real application flows (health checks, user journeys, admin operations)
+- Review logs for needed allowances
+- Move to **Enforce mode** once the profile is stable
+
+### ⚠️ Notes
+
+- If the tool patches GRUB to enable AppArmor kernel parameters, a reboot is typically required to apply them.
+- Any hardening rule set can impact applications that rely on helper binaries or unusual file paths; always test in Complain first.
+
+
+
+---
+
 ## 🧾 Logging & troubleshooting
 
 ### Where denials appear
